@@ -11,6 +11,11 @@ describe Game do
                 allow(play_game_true_test).to receive(:player_choose).and_return(valid_input)
                 allow(play_game_true_test).to receive(:update_board).with(4)   
             end
+            it 'it sends a command to display the explanation' do 
+                display = play_game_true_test.instance_variable_get(:@display)
+                expect(display).to receive(:explain_game).once
+                play_game_true_test.play_game
+            end
             it 'sends a message to switch player' do
                 expect(play_game_true_test).to receive(:switch_player).once
                 play_game_true_test.play_game
@@ -30,8 +35,6 @@ describe Game do
                 display = play_game_true_test.instance_variable_get(:@display)
                 expect(display).to receive(:update_display).once
                 play_game_true_test.play_game
-                
-            
             end
             it 'sends check_win once' do
                 expect(play_game_true_test).to receive(:check_win).once
@@ -47,6 +50,13 @@ describe Game do
                 allow(play_game_false_test).to receive(:player_choose).and_return(valid_input) 
                 allow(play_game_false_test).to receive(:update_board).with(4)         
             end
+
+            it 'it sends a command to display the explanation' do 
+                display = play_game_false_test.instance_variable_get(:@display)
+                expect(display).to receive(:explain_game).once
+                play_game_false_test.play_game
+            end
+
             it 'sends a message to switch player 2 times' do
                 expect(play_game_false_test).to receive(:switch_player).twice
                 play_game_false_test.play_game
@@ -80,6 +90,10 @@ describe Game do
             before do
                 allow(player_choose_once_test).to receive(:take_column_choice).and_return("7")
                 allow(player_choose_once_test).to receive(:verify_column).with('7').and_return(true)
+            end
+
+            it 'it sends a command for the player_choose_script ' do 
+                display = player_choose_once_test.instance_variable_get
             end
 
             it 'takes player column choice once' do

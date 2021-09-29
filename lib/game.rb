@@ -13,6 +13,7 @@ class Game
     end
 
     def play_game 
+        @display.explain_game
         while @game_over == false  do
             switch_player
             column_choice = player_choose
@@ -26,6 +27,7 @@ class Game
     def player_choose
         valid_choice = false
         while valid_choice == false 
+            @display.player_choose_script
             column_choice = take_column_choice
             valid_choice = verify_column(column_choice)
             column_choice 
