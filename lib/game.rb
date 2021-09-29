@@ -57,7 +57,9 @@ class Game
     end
 
     def check_win
-        if @game_over == false
+        #vertical win
+        result = false
+        if result == false
             current_column = 0
             7.times do
                 starting_row = 0
@@ -69,14 +71,14 @@ class Game
                         connect_counter += 1 if spot == @symbol
                         n += 1
                     end
-                    @game_over = true if connect_counter == 4
+                    result = true if connect_counter == 4
                     starting_row += 1
                 end
                 current_column += 1
             end
         end
 
-        if @game_over == false
+        if result == false
             current_row = 0
             6.times do 
                 starting_column = 0
@@ -88,14 +90,14 @@ class Game
                         connect_counter += 1 if spot == @symbol
                         n += 1
                     end
-                    @game_over = true if connect_counter == 4
+                    result = true if connect_counter == 4
                     starting_column += 1
                 end
                 current_row += 1
             end
         end
 
-        if @game_over == false
+        if result == false
 
             starting_column = 0
             4.times do 
@@ -108,7 +110,7 @@ class Game
                         connect_counter += 1 if spot == @symbol
                         n += 1
                     end
-                    @game_over = true if connect_counter == 4
+                    result = true if connect_counter == 4
                     starting_row += 1
                 end
                 starting_column += 1
@@ -116,7 +118,7 @@ class Game
 
         end
 
-        if @game_over == false
+        if result == false
 
             starting_column = 0
             4.times do
@@ -129,7 +131,7 @@ class Game
                         connect_counter += 1 if spot == @symbol
                         n += 1
                     end
-                    @game_over = true if connect_counter == 4
+                    result = true if connect_counter == 4
                     starting_row -= 1
                 end
                 starting_column += 1
@@ -138,7 +140,7 @@ class Game
 
         end
 
-        if @game_over == false
+        if result == false
             columns_full = 0
             @game_board.each do |column| 
                 filled_counter = 0 
@@ -147,8 +149,9 @@ class Game
                 end
                 columns_full += 1 if filled_counter == 6
             end
-            @game_over = true if columns_full == 7
+            result = true if columns_full == 7
         end
+        result
     end
 
     def verify_column(column_choice)

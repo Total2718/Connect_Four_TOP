@@ -45,7 +45,6 @@ class GameDisplay
         elsif symbol == 'R'
             @current_player = @player_one
         end
-        
     end
 
     def explain_game
@@ -78,6 +77,7 @@ class GameDisplay
         puts <<-script
             #{@current_player}please select a column that isn't filled by entering in the single digit by itself: 
         script
+        show_current_display
     end
 
 

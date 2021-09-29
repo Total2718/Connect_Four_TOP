@@ -93,7 +93,9 @@ describe Game do
             end
 
             it 'it sends a command for the player_choose_script ' do 
-                display = player_choose_once_test.instance_variable_get
+                display = player_choose_once_test.instance_variable_get(:@display)
+                expect(display).to receive(:player_choose_script).once
+                player_choose_once_test.player_choose
             end
 
             it 'takes player column choice once' do
@@ -117,6 +119,12 @@ describe Game do
                 allow(player_choose_twice_test).to receive(:take_column_choice).and_return(invalid_input, valid_input)
                 allow(player_choose_twice_test).to receive(:verify_column).with(invalid_input).and_return(false)
                 allow(player_choose_twice_test).to receive(:verify_column).with(valid_input).and_return(true)
+            end
+
+            it 'it sends a command for the player_choose_script ' do 
+                display = player_choose_twice_test.instance_variable_get(:@display)
+                expect(display).to receive(:player_choose_script).twice
+                player_choose_twice_test.player_choose
             end
 
             it 'takes player column choice twice' do 
@@ -246,9 +254,8 @@ describe Game do
                 game_board[1][2] = 'B'
                 game_board[1][3] = 'B'
                 check_win_won_test.instance_variable_set(:@game_board, game_board)
-                check_win_won_test.check_win
-                game_over = check_win_won_test.instance_variable_get(:@game_over)
-                expect(game_over).to eq(true)
+                result = check_win_won_test.check_win
+                expect(result).to eq(true)
             end
 
             it "it causes someone to win with a horizontal sequence" do 
@@ -258,9 +265,8 @@ describe Game do
                 game_board[3][1] = 'B'
                 game_board[4][1] = 'B'
                 check_win_won_test.instance_variable_set(:@game_board, game_board)
-                check_win_won_test.check_win
-                game_over = check_win_won_test.instance_variable_get(:@game_over)
-                expect(game_over).to eq(true)
+                result = check_win_won_test.check_win
+                expect(result).to eq(true)
             end
 
             it "it causes someone to win with a upward sequence" do 
@@ -270,9 +276,8 @@ describe Game do
                 game_board[3][3] = 'B'
                 game_board[4][4] = 'B'
                 check_win_won_test.instance_variable_set(:@game_board, game_board)
-                check_win_won_test.check_win
-                game_over = check_win_won_test.instance_variable_get(:@game_over)
-                expect(game_over).to eq(true)
+                result = check_win_won_test.check_win
+                expect(result).to eq(true)
             end
 
             it "it causes someone to win with a downward sequence" do 
@@ -282,9 +287,8 @@ describe Game do
                 game_board[3][2] = 'B'
                 game_board[4][1] = 'B'
                 check_win_won_test.instance_variable_set(:@game_board, game_board)
-                check_win_won_test.check_win
-                game_over = check_win_won_test.instance_variable_get(:@game_over)
-                expect(game_over).to eq(true)
+                result = check_win_won_test.check_win
+                expect(result).to eq(true)
             end
         end
 
@@ -293,17 +297,15 @@ describe Game do
             it "it ends the game when the board is full" do 
                 game_board = Array.new(7) {Array.new(6, 'green')}
                 check_win_lost_test.instance_variable_set(:@game_board, game_board)
-                check_win_lost_test.check_win
-                game_over = check_win_lost_test.instance_variable_get(:@game_over)
-                expect(game_over).to eq(true)
+                result = check_win_lost_test.check_win
+                expect(result).to eq(true)
             end
 
             it "it continues the game when there is no sequence and the board isn't full" do 
                 game_board = Array.new(7) {Array.new(6, '-')}
                 check_win_lost_test.instance_variable_set(:@game_board, game_board)
-                check_win_lost_test.check_win
-                game_over = check_win_lost_test.instance_variable_get(:@game_over)
-                expect(game_over).to eq(false)
+                result = check_win_lost_test.check_win
+                expect(result).to eq(false)
             end
             
         end
