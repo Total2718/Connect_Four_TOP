@@ -215,6 +215,16 @@ describe Game do
                     result = verify_column_valid_test.verify_column(column_choice)
                     expect(result).to eq(false)
                 end
+
+                it 'sends a command to the column full message' do 
+                    display = verify_column_valid_test.instance_variable_get(:@display)
+                    game_board = Array.new(6, Array.new(7, nil))
+                    game_board[0] = ['B', 'B', 'B', 'B', 'B', 'B']
+                    verify_column_valid_test.instance_variable_set(:@game_board, game_board)
+                    column_choice = '1'
+                    expect(display).to receive(:column_full_message)
+                    verify_column_valid_test.verify_column(column_choice)
+                end
             end
 
             context 'and the column has room in it' do 
@@ -225,6 +235,16 @@ describe Game do
                     column_choice = '2'
                     result = verify_column_valid_test.verify_column(column_choice)
                     expect(result).to eq(true)
+                end
+
+                it 'it sends a command to the tell great move method' do 
+                    display = verify_column_valid_test.instance_variable_get(:@display)
+                    game_board = Array.new(7, Array.new(6, nil))
+                    game_board[1] = ['B', 'B', 'B', 'B', 'B', nil]
+                    verify_column_valid_test.instance_variable_set(:@game_board, game_board)
+                    column_choice = '2'
+                    expect(display).to receive(:tell_great_move)
+                    verify_column_valid_test.verify_column(column_choice)
                 end
             end
          end
@@ -240,6 +260,13 @@ describe Game do
                 invalid_input = '23'
                 result = verify_column_invalid_test.verify_column(invalid_input)
                 expect(result).to eq(false)
+            end
+
+            it 'it sends a command to the invalid input message' do 
+                invalid_input = '23'
+                display = verify_column_invalid_test.instance_variable_get(:@display)
+                expect(display).to receive(:invalid_input_message)
+                verify_column_invalid_test.verify_column(invalid_input)
             end
          end
     end
@@ -293,21 +320,34 @@ describe Game do
         end
 
         context "when a player doesn't win" do
-            subject(:check_win_lost_test) {described_class.new('Bobby', 'Ricky')}
-            it "it ends the game when the board is full" do 
+            context 'and the board is full' do
+                subject(:check_win_lost_test) {described_class.new('Bobby', 'Ricky')}
+                it "it ends the game" do 
+                    game_board = Array.new(7) {Array.new(6, 'green')}
+                    check_win_lost_test.instance_variable_set(:@game_board, game_board)
+                    result = check_win_lost_test.check_win
+                    expect(result).to eq(true)
+                end
+             
+
+            it 'displays the board full message' do 
                 game_board = Array.new(7) {Array.new(6, 'green')}
                 check_win_lost_test.instance_variable_set(:@game_board, game_board)
-                result = check_win_lost_test.check_win
-                expect(result).to eq(true)
+                display = check_win_lost_test.instance_variable_get(:@display)
+                check_win_lost_test.check_win
+                expect(display).to receive(:board_full_message)
+                check_win_lost_test.check_win
             end
-
-            it "it continues the game when there is no sequence and the board isn't full" do 
-                game_board = Array.new(7) {Array.new(6, '-')}
-                check_win_lost_test.instance_variable_set(:@game_board, game_board)
-                result = check_win_lost_test.check_win
-                expect(result).to eq(false)
+        end
+            context 'and the board is not full yet' do 
+                subject(:check_win_lost_test) {described_class.new('Bobby', 'Ricky')}
+                it "the game continues" do 
+                    game_board = Array.new(7) {Array.new(6, '-')}
+                    check_win_lost_test.instance_variable_set(:@game_board, game_board)
+                    result = check_win_lost_test.check_win
+                    expect(result).to eq(false)
+                end
             end
-            
         end
     end
 end

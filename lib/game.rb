@@ -71,13 +71,13 @@ class Game
                         connect_counter += 1 if spot == @symbol
                         n += 1
                     end
-                    result = true if connect_counter == 4
+                    ((result = true) && @display.player_win_message) if connect_counter == 4
                     starting_row += 1
                 end
                 current_column += 1
             end
         end
-
+        #horizontal win
         if result == false
             current_row = 0
             6.times do 
@@ -90,15 +90,14 @@ class Game
                         connect_counter += 1 if spot == @symbol
                         n += 1
                     end
-                    result = true if connect_counter == 4
+                    ((result = true) && @display.player_win_message) if connect_counter == 4
                     starting_column += 1
                 end
                 current_row += 1
             end
         end
-
+        #upward diagonal win
         if result == false
-
             starting_column = 0
             4.times do 
                 starting_row = 0
@@ -110,16 +109,15 @@ class Game
                         connect_counter += 1 if spot == @symbol
                         n += 1
                     end
-                    result = true if connect_counter == 4
+                    ((result = true) && @display.player_win_message) if connect_counter == 4
                     starting_row += 1
                 end
                 starting_column += 1
             end
 
         end
-
+        #downward diagonal win
         if result == false
-
             starting_column = 0
             4.times do
                 starting_row = 6
@@ -131,7 +129,7 @@ class Game
                         connect_counter += 1 if spot == @symbol
                         n += 1
                     end
-                    result = true if connect_counter == 4
+                    ((result = true) && @display.player_win_message) if connect_counter == 4
                     starting_row -= 1
                 end
                 starting_column += 1
@@ -149,8 +147,9 @@ class Game
                 end
                 columns_full += 1 if filled_counter == 6
             end
-            result = true if columns_full == 7
+            ((result = true) && @display.board_full_message) if columns_full == 7
         end
+        
         result
     end
 
@@ -162,12 +161,19 @@ class Game
                 @game_board[column_choice.to_i - 1].each do |spot|
                     (column_full += 1) if (spot == 'B' || spot == 'R')
                 end
-                column_full == 6 ? false : true
-                
+
+                if column_full == 6
+                    @display.column_full_message
+                    false
+                else
+                    @display.tell_great_move
+                    true
+                end
             else
                 false
             end
         else
+            @display.invalid_input_message
             false
         end
     end

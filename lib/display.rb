@@ -75,9 +75,41 @@ class GameDisplay
     def player_choose_script
 
         puts <<-script
-            #{@current_player}please select a column that isn't filled by entering in the single digit by itself: 
+            #{@current_player} please select a column that isn't filled by entering in the single digit by itself: 
         script
         show_current_display
+    end
+
+    def board_full_message
+       puts <<-script
+            #{@player_one} and #{@player_two}, it looks like you both have filled up the entire board and neither of 
+        you have gotten a Connect 4. That's too bad. Good luck next time!
+
+        script
+    end
+
+    def player_win_message
+        puts <<-script
+           Congratulations #{@current_player}!!! You've successfully gotten a Connect 4!!!        
+           script
+    end
+
+    def column_full_message
+        puts <<-message
+            The column you entered is full. Please choose another.
+        message
+    end
+
+    def invalid_input_message 
+        puts <<-message
+            Invalid Input! Please try again!
+        message
+    end
+
+    def tell_great_move
+        puts <<-message
+            Great move!
+        message
     end
 
 
