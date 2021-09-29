@@ -22,9 +22,9 @@
         game = Game.new(player_one, player_two)
         game.play_game
         response = nil
-        while response != 1 && response != 2 do 
-        puts 'Please enter 2 if you would like to keep playing or 1 if you would like to stop.'
-        response = gets.chomp
+        unless response.to_i == 1 || response == 2 then 
+            puts 'Please enter 1 if you would like to keep playing or 2 if you would like to stop.'
+            response = gets.chomp
         end
-        continue_playing?(response)
+        stop_playing = continue_playing?(response)
     end
