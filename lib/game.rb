@@ -16,7 +16,7 @@ class Game
         @display.explain_game
         while @game_over == false  do
             switch_player
-            column_choice = player_choose
+            column_choice = player_choose           
             update_board(column_choice.to_i)
             @display.update_display(@game_board)
             @game_over = check_win
@@ -26,12 +26,13 @@ class Game
 
     def player_choose
         valid_choice = false
+        column_choice = nil
         while valid_choice == false 
             @display.player_choose_script
             column_choice = take_column_choice
             valid_choice = verify_column(column_choice)
-            column_choice 
         end
+        column_choice
 
     end
 
@@ -41,10 +42,11 @@ class Game
 
     def update_board(column_choice)
         slot_counter = 0
-        @game_board[column_choice - 1].each do |current_slot|
+        column_choice -= 1
+        @game_board[column_choice].each do |current_slot|
             slot_counter += 1 if current_slot != '-'
         end
-        @game_board[column_choice - 1][slot_counter] = @symbol
+        @game_board[column_choice][slot_counter] = @symbol
     end
 
     def switch_player 

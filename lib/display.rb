@@ -89,9 +89,11 @@ class GameDisplay
     end
 
     def player_win_message
+        show_current_display
         puts <<-script
            Congratulations #{@current_player}!!! You've successfully gotten a Connect 4!!!        
            script
+           
     end
 
     def column_full_message
